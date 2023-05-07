@@ -24,7 +24,10 @@ users:\n\
 RUN printf 'mkdir /config/.kube \n\
 cp /opt/kubeconfig /config/.kube/config' >> /etc/cont-init.d/100-kubeconfig
 
-RUN mkdir /ssh
-COPY ssh/*.pub /ssh/
+RUN mkdir /ssh && mkdir /custom-cont-init.d
+COPY custom-scripts/take_pubkeys_from_env.sh /custom-cont-init.d/
+COPY custom-scripts/printIpAddr.sh /custom-cont-init.d/
+RUN chmod u+x /custom-cont-init.d/take_pubkeys_from_env.sh && \
+  chmod u+x /custom-cont-init.d/printIpAddr.sh
 
 
