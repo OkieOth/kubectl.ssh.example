@@ -37,16 +37,25 @@ spec:
             - name: http
               containerPort: {{ .Values.service.srcPort }}
               protocol: TCP
+          env:
+            - name: USER_NAME
+              value: {{ .Values.ssh.userName }}
+            - name: PUBLIC_KEY_DIR
+              value: {{ .Values.ssh.publicKeyDir }}
+              {{- range $key := .Values.ssh.publicKeys }}
+            - name: PUBKEY_{{ $key.id }}
+              value: {{ $key.key }}
+              {{- end }}
           livenessProbe:
             failureThreshold: 3
             periodSeconds: 10
             successThreshold: 1
             tcpSocket:
               port: 2222
-          readinessProbe:
+            readinessProbe:
             failureThreshold: 3
             periodSeconds: 5
-            successThreshold: 5
+            successThreshold: 1
             tcpSocket:
               port: 2222
           resources:

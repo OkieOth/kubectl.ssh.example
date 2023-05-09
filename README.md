@@ -9,9 +9,6 @@ Create a cluster with a maintenance pod that contains kubectl and an sshd
 # Usage
 
 ```bash
-# create cluster with 3 agents
-k3d cluster create k3d.eiko.01 --agents 3
-
 # create a docker image
 ./buildDockerImage.sh
 
@@ -23,6 +20,9 @@ docker run --rm -t -e USER_NAME=kubeadmin -e PUBLIC_KEY_DIR=/ssh \
     ghcr.io/okieoth/kubectl:0.1.0
 
 # import the created image into the cluster
+# create cluster with 3 agents
+k3d cluster create k3d.eiko.01 --agents 3
+
 k3d image import ghcr.io/okieoth/kubectl:0.1.0 -c k3d.eiko.01
 
 helm install kubectl ./helm
